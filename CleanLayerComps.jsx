@@ -26,6 +26,7 @@
         }
         for(var t in toDelete){
             selLayer(Number(toDelete[t]));
+            unlock_all();
             doc.activeLayer.remove();
         }
     removeEmptyLayerSets();
@@ -159,3 +160,22 @@ function getSelectedLayersIdx(){
    }
    return selectedLayers;
 };
+
+function unlock_all() {
+    var idapplyLocking = stringIDToTypeID( "applyLocking" );
+    var desc11 = new ActionDescriptor();
+    var idnull = charIDToTypeID( "null" );
+    var ref5 = new ActionReference();
+    var idLyr = stringIDToTypeID( "layer" );
+    var idOrdn = stringIDToTypeID( "ordinal" );
+    var idTrgt = stringIDToTypeID( "targetEnum" );
+    ref5.putEnumerated( idLyr, idOrdn, idTrgt );
+    desc11.putReference( idnull, ref5 );
+    var idlayerLocking = stringIDToTypeID( "layerLocking" );
+    var desc12 = new ActionDescriptor();
+    var idprotectNone = stringIDToTypeID( "protectNone" );
+    desc12.putBoolean( idprotectNone, true );
+    var idlayerLocking = stringIDToTypeID( "layerLocking" );
+    desc11.putObject( idlayerLocking, idlayerLocking, desc12 );
+    executeAction( idapplyLocking, desc11, DialogModes.NO );
+}
